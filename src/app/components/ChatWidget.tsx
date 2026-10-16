@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 interface Message {
   role: "user" | "model";
   content: string;
+  citations?: string[];
 }
 
 export function ChatWidget() {
@@ -17,6 +18,17 @@ export function ChatWidget() {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const sessionIdRef = useRef<string>(
+    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : ""
+  );
+
+  useEffect(() => {
+    if (!sessionIdRef.current && typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      sessionIdRef.current = crypto.randomUUID();
+    }
+  }, []);
 
   // Initial greeting logic
   useEffect(() => {
@@ -32,7 +44,7 @@ export function ChatWidget() {
         setMessages([
           {
             role: "model",
-            content: "Hello! I am your AI Math Tutor. Feel free to ask me any math questions!",
+            content: "Hello! I'm your **Maths Qwen3-4B Tutor** 🤖 powered by your locally fine-tuned AI model with textbook RAG. Ask me any Class 10 maths question!",
           },
         ]);
       }
@@ -85,6 +97,7 @@ export function ChatWidget() {
         body: JSON.stringify({
           messages: newMessages,
           problemContext: problemContext,
+          sessionId: sessionIdRef.current,
         }),
       });
 
@@ -94,7 +107,14 @@ export function ChatWidget() {
         throw new Error(data.error || "Failed to get response");
       }
 
-      setMessages((prev) => [...prev, { role: "model", content: data.reply }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "model",
+          content: data.reply,
+          citations: data.citations || [],
+        },
+      ]);
     } catch (error: any) {
       setMessages((prev) => [
         ...prev,
@@ -118,7 +138,7 @@ export function ChatWidget() {
         "Why did we use this specific formula?",
         "Can you simplify the final answer?",
       ]
-    : ["What is a Cartesian product?", "Explain the types of functions."];
+    : ["What is a Cartesian product?", "Explain the types of functions.", "What is a relation?"];
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
@@ -134,7 +154,7 @@ export function ChatWidget() {
 
       {/* Chat Panel */}
       {isChatOpen && (
-        <div className="w-[90vw] sm:w-[400px] h-[600px] max-h-[80vh] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
+        <div className="w-[90vw] sm:w-[420px] h-[600px] max-h-[80vh] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 flex items-center justify-between text-white shrink-0">
             <div className="flex items-center gap-3">
@@ -142,9 +162,9 @@ export function ChatWidget() {
                 <Bot className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-bold text-lg leading-tight">AI Math Tutor</h3>
+                <h3 className="font-bold text-lg leading-tight">Maths Qwen3-4B Tutor</h3>
                 <p className="text-blue-100 text-xs font-medium">
-                  {problemContext ? "Context Active \u2728" : "General Mode"}
+                  {problemContext ? "Context Active ✨" : "Local Model + RAG ✨"}
                 </p>
               </div>
             </div>
@@ -172,33 +192,49 @@ export function ChatWidget() {
                 >
                   {msg.role === "user" ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
                 </div>
-                <div
-                  className={`p-3 rounded-2xl text-sm ${
-                    msg.role === "user"
-                      ? "bg-blue-600 text-white rounded-tr-sm"
-                      : "bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm markdown-body"
-                  }`}
-                  style={{ wordBreak: "break-word" }}
-                >
-                  {msg.role === "user" ? (
-                    msg.content
-                  ) : (
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm]}
-                      components={{
-                        h1: ({node, ...props}) => <h1 className="text-xl font-bold mt-4 mb-2" {...props} />,
-                        h2: ({node, ...props}) => <h2 className="text-lg font-bold mt-3 mb-1.5" {...props} />,
-                        h3: ({node, ...props}) => <h3 className="text-md font-bold mt-2 mb-1" {...props} />,
-                        h4: ({node, ...props}) => <h4 className="text-sm font-bold mt-2 mb-1" {...props} />,
-                        p: ({node, ...props}) => <p className="mb-2 last:mb-0 leading-relaxed" {...props} />,
-                        ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-2" {...props} />,
-                        ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-2" {...props} />,
-                        li: ({node, ...props}) => <li className="mb-1" {...props} />,
-                        strong: ({node, ...props}) => <strong className="font-semibold text-gray-900" {...props} />
-                      }}
-                    >
-                      {msg.content.replace(/^\\?#{1,6}\s+(.*)$/gm, '**$1**')}
-                    </ReactMarkdown>
+                <div className="flex flex-col gap-1 max-w-full">
+                  <div
+                    className={`p-3 rounded-2xl text-sm ${
+                      msg.role === "user"
+                        ? "bg-blue-600 text-white rounded-tr-sm"
+                        : "bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm markdown-body"
+                    }`}
+                    style={{ wordBreak: "break-word" }}
+                  >
+                    {msg.role === "user" ? (
+                      msg.content
+                    ) : (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          h1: ({node, ...props}) => <h1 className="text-xl font-bold mt-4 mb-2" {...props} />,
+                          h2: ({node, ...props}) => <h2 className="text-lg font-bold mt-3 mb-1.5" {...props} />,
+                          h3: ({node, ...props}) => <h3 className="text-md font-bold mt-2 mb-1" {...props} />,
+                          h4: ({node, ...props}) => <h4 className="text-sm font-bold mt-2 mb-1" {...props} />,
+                          p: ({node, ...props}) => <p className="mb-2 last:mb-0 leading-relaxed" {...props} />,
+                          ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-2" {...props} />,
+                          ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-2" {...props} />,
+                          li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                          strong: ({node, ...props}) => <strong className="font-semibold text-gray-900" {...props} />
+                        }}
+                      >
+                        {msg.content.replace(/^\\?#{1,6}\s+(.*)$/gm, '**$1**')}
+                      </ReactMarkdown>
+                    )}
+                  </div>
+                  {/* Citation pills for bot messages */}
+                  {msg.role === "model" && msg.citations && msg.citations.length > 0 && (
+                    <div className="flex flex-col gap-1 mt-1 max-w-full">
+                      {msg.citations.slice(0, 2).map((cite, cidx) => (
+                        <span
+                          key={cidx}
+                          className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-medium rounded-full truncate max-w-[260px]"
+                          title={cite}
+                        >
+                          📖 {cite.length > 50 ? cite.substring(0, 50) + '...' : cite}
+                        </span>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>
@@ -211,7 +247,7 @@ export function ChatWidget() {
                 </div>
                 <div className="p-4 bg-white border border-gray-200 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
-                  <span className="text-sm text-gray-500 font-medium">Thinking...</span>
+                  <span className="text-sm text-gray-500 font-medium">Generating answer...</span>
                 </div>
               </div>
             )}

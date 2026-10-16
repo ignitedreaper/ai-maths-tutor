@@ -1,127 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chapter 1 – Theory | Relations & Functions</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
-<style>
-:root{--bg:#F7F8FF;--surface:#fff;--surface2:#F1F3FB;--border:#E0E3F0;--text:#1A1D2E;--text2:#555870;--accent:#4F46E5;--accent-l:#EEF2FF;--accent-m:#C7D2FE;--shadow:0 2px 12px rgba(79,70,229,.09)}
-@media(prefers-color-scheme:dark){:root{--bg:#0D0F1E;--surface:#161926;--surface2:#1C1F30;--border:#252840;--text:#E6E8FA;--text2:#8890B0;--accent:#818CF8;--accent-l:#1A1D38;--accent-m:#2D3260}}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.topbar a{color:var(--text2);text-decoration:none;font-size:.82rem;font-weight:500}.topbar a:hover{color:var(--accent)}
-.sep{color:var(--border)}
-.ch-badge{background:var(--accent-l);color:var(--accent);font-size:.72rem;font-weight:700;padding:2px 10px;border-radius:99px;letter-spacing:.05em;text-transform:uppercase}
-.sibling-nav{display:flex;gap:8px;margin-left:auto}
-.sn-btn{padding:6px 14px;border-radius:7px;border:1.5px solid var(--border);font-size:.8rem;font-weight:600;text-decoration:none;color:var(--text2);transition:all .15s}
-.sn-btn:hover,.sn-btn.active{background:var(--accent-l);border-color:var(--accent-m);color:var(--accent)}
-.sn-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chapter 1 – Theory | Relations & Functions</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+  <style>
+    :root {
+      --bg: #F7F8FF;
+      --surface: #fff;
+      --surface2: #F1F3FB;
+      --border: #E0E3F0;
+      --text: #1A1D2E;
+      --text2: #555870;
+      --accent: #4F46E5;
+      --accent-l: #EEF2FF;
+      --accent-m: #C7D2FE;
+      --shadow: 0 2px 12px rgba(79, 70, 229, .09)
+    }
 
-.wrap{max-width:860px;margin:0 auto;padding:32px 24px 60px}
-h1{font-size:1.6rem;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
-.meta{color:var(--text2);font-size:.86rem;margin-bottom:28px}
-section{margin-bottom:36px}
-h2{font-size:1.05rem;font-weight:700;color:var(--accent);border-left:3px solid var(--accent);padding-left:12px;margin-bottom:14px}
-h3{font-size:.95rem;font-weight:600;margin-bottom:8px;margin-top:16px}
-p{font-size:.92rem;line-height:1.75;color:var(--text);margin-bottom:10px}
-ul,ol{padding-left:20px;margin-bottom:10px}
-li{font-size:.92rem;line-height:1.75;margin-bottom:3px}
-.defn-box{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
-.defn-box .term{font-weight:700;color:var(--accent);margin-bottom:4px;font-size:.9rem}
-.defn-box p{margin:0;font-size:.88rem}
-.highlight{background:var(--accent-l);border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.9rem}
-.example-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:10px 0;font-size:.88rem}
-.example-box .ex-label{font-size:.75rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-code{font-family:'JetBrains Mono',monospace;font-size:.88em;background:var(--surface2);padding:1px 5px;border-radius:4px}
-table.def-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:10px 0}
-table.def-table th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
-table.def-table th:first-child{border-radius:7px 0 0 0}table.def-table th:last-child{border-radius:0 7px 0 0}
-table.def-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-table.def-table tr:last-child td{border:none}
-table.def-table tr:nth-child(even) td{background:var(--surface2)}
-</style>
+    @media(prefers-color-scheme:dark) {
+      :root {
+        --bg: #0D0F1E;
+        --surface: #161926;
+        --surface2: #1C1F30;
+        --border: #252840;
+        --text: #E6E8FA;
+        --text2: #8890B0;
+        --accent: #818CF8;
+        --accent-l: #1A1D38;
+        --accent-m: #2D3260
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh
+    }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .topbar a {
+      color: var(--text2);
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 500
+    }
+
+    .topbar a:hover {
+      color: var(--accent)
+    }
+
+    .sep {
+      color: var(--border)
+    }
+
+    .ch-badge {
+      background: var(--accent-l);
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 99px;
+      letter-spacing: .05em;
+      text-transform: uppercase
+    }
+
+    .sibling-nav {
+      display: flex;
+      gap: 8px;
+      margin-left: auto
+    }
+
+    .sn-btn {
+      padding: 6px 14px;
+      border-radius: 7px;
+      border: 1.5px solid var(--border);
+      font-size: .8rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text2);
+      transition: all .15s
+    }
+
+    .sn-btn:hover,
+    .sn-btn.active {
+      background: var(--accent-l);
+      border-color: var(--accent-m);
+      color: var(--accent)
+    }
+
+    .sn-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 24px 60px
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 4px
+    }
+
+    .meta {
+      color: var(--text2);
+      font-size: .86rem;
+      margin-bottom: 28px
+    }
+
+    section {
+      margin-bottom: 36px
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      border-left: 3px solid var(--accent);
+      padding-left: 12px;
+      margin-bottom: 14px
+    }
+
+    h3 {
+      font-size: .95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 16px
+    }
+
+    p {
+      font-size: .92rem;
+      line-height: 1.75;
+      color: var(--text);
+      margin-bottom: 10px
+    }
+
+    ul,
+    ol {
+      padding-left: 20px;
+      margin-bottom: 10px
+    }
+
+    li {
+      font-size: .92rem;
+      line-height: 1.75;
+      margin-bottom: 3px
+    }
+
+    .defn-box {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow)
+    }
+
+    .defn-box .term {
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+      font-size: .9rem
+    }
+
+    .defn-box p {
+      margin: 0;
+      font-size: .88rem
+    }
+
+    .highlight {
+      background: var(--accent-l);
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: .9rem
+    }
+
+    .example-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 10px 0;
+      font-size: .88rem
+    }
+
+    .example-box .ex-label {
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 6px
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .88em;
+      background: var(--surface2);
+      padding: 1px 5px;
+      border-radius: 4px
+    }
+
+    table.def-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+      margin: 10px 0
+    }
+
+    table.def-table th {
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 12px;
+      text-align: left
+    }
+
+    table.def-table th:first-child {
+      border-radius: 7px 0 0 0
+    }
+
+    table.def-table th:last-child {
+      border-radius: 0 7px 0 0
+    }
+
+    table.def-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    table.def-table tr:last-child td {
+      border: none
+    }
+
+    table.def-table tr:nth-child(even) td {
+      background: var(--surface2)
+    }
+  </style>
 </head>
+
 <body>
-<div class="topbar">
-  <a href="../index.html">← All Chapters</a>
-  <span class="sep">›</span>
-  <span class="ch-badge">Chapter 1</span>
-  <span style="font-size:.85rem;font-weight:600">Relations &amp; Functions</span>
-  <div class="sibling-nav">
-    <a class="sn-btn active" href="theory.html">Theory</a>
-    <a class="sn-btn" href="formulas.html">Formulas</a>
-    <a class="sn-btn" href="sample_questions.html">Questions</a>
+  <div class="topbar">
+    <a href="../index.html">← All Chapters</a>
+    <span class="sep">›</span>
+    <span class="ch-badge">Chapter 1</span>
+    <span style="font-size:.85rem;font-weight:600">Relations &amp; Functions</span>
+    <div class="sibling-nav">
+      <a class="sn-btn active" href="theory.html">Theory</a>
+      <a class="sn-btn" href="formulas.html">Formulas</a>
+      <a class="sn-btn" href="sample_questions.html">Questions</a>
+    </div>
   </div>
-</div>
 
-<div class="wrap">
-  <h1>Chapter 1 — Relations &amp; Functions</h1>
-  <p class="meta">Class 10 · Tamil Nadu Samacheer Kalvi Mathematics</p>
+  <div class="wrap">
+    <h1>Chapter 1 — Relations &amp; Functions</h1>
+    <p class="meta">Class 10 · Tamil Nadu Samacheer Kalvi Mathematics</p>
 
-  <section>
-    <h2>1. Sets — Quick Recap</h2>
-    <p>A <strong>set</strong> is a well-defined collection of distinct objects. Sets are denoted by capital letters A, B, C…</p>
-    <div class="defn-box"><div class="term">Cartesian Product</div><p>For sets A and B, A × B = {(a, b) | a ∈ A and b ∈ B}. The number of elements in A × B = n(A) × n(B).</p></div>
-    <div class="example-box"><div class="ex-label">Example</div>A = {1, 2}, B = {a, b} → A × B = {(1,a), (1,b), (2,a), (2,b)}</div>
-  </section>
+    <section>
+      <h2>1. Sets — Quick Recap</h2>
+      <p>A <strong>set</strong> is a well-defined collection of distinct objects. Sets are denoted by capital letters A,
+        B, C…</p>
+      <div class="defn-box">
+        <div class="term">Cartesian Product</div>
+        <p>For sets A and B, A × B = {(a, b) | a ∈ A and b ∈ B}. The number of elements in A × B = n(A) × n(B).</p>
+      </div>
+      <div class="example-box">
+        <div class="ex-label">Example</div>A = {1, 2}, B = {a, b} → A × B = {(1,a), (1,b), (2,a), (2,b)}
+      </div>
+    </section>
 
-  <section>
-    <h2>2. Relations</h2>
-    <div class="defn-box"><div class="term">Relation</div><p>A <strong>relation</strong> R from set A to set B is any subset of A × B. If (a, b) ∈ R, we write a R b.</p></div>
-    <h3>Key Terms</h3>
-    <table class="def-table">
-      <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Domain</strong></td><td>Set of all first elements (x-values) in R</td></tr>
-        <tr><td><strong>Co-domain</strong></td><td>Set B (all possible second values)</td></tr>
-        <tr><td><strong>Range</strong></td><td>Set of all second elements actually used in R (Range ⊆ Co-domain)</td></tr>
-      </tbody>
-    </table>
-    <div class="highlight">A relation is simply a rule that pairs elements of A with elements of B. Not every element of A needs to be paired, and an element can have multiple images.</div>
-  </section>
+    <section>
+      <h2>2. Relations</h2>
+      <div class="defn-box">
+        <div class="term">Relation</div>
+        <p>A <strong>relation</strong> R from set A to set B is any subset of A × B. If (a, b) ∈ R, we write a R b.</p>
+      </div>
+      <h3>Key Terms</h3>
+      <table class="def-table">
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Domain</strong></td>
+            <td>Set of all first elements (x-values) in R</td>
+          </tr>
+          <tr>
+            <td><strong>Co-domain</strong></td>
+            <td>Set B (all possible second values)</td>
+          </tr>
+          <tr>
+            <td><strong>Range</strong></td>
+            <td>Set of all second elements actually used in R (Range ⊆ Co-domain)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="highlight">A relation is simply a rule that pairs elements of A with elements of B. Not every element
+        of A needs to be paired, and an element can have multiple images.</div>
+    </section>
 
-  <section>
-    <h2>3. Functions</h2>
-    <div class="defn-box"><div class="term">Function (Definition)</div><p>A relation f: A → B is a <strong>function</strong> if every element of A has exactly one image in B.</p></div>
-    <h3>Conditions for a function:</h3>
-    <ul>
-      <li>Every element in A must be mapped.</li>
-      <li>Each element in A maps to exactly one element in B (no splitting).</li>
-      <li>Different elements in A may map to the same element in B.</li>
-    </ul>
-    <div class="example-box"><div class="ex-label">Not a function</div>If 1 → a AND 1 → b, then it is NOT a function (one element has two images).</div>
-  </section>
+    <section>
+      <h2>3. Functions</h2>
+      <div class="defn-box">
+        <div class="term">Function (Definition)</div>
+        <p>A relation f: A → B is a <strong>function</strong> if every element of A has exactly one image in B.</p>
+      </div>
+      <h3>Conditions for a function:</h3>
+      <ul>
+        <li>Every element in A must be mapped.</li>
+        <li>Each element in A maps to exactly one element in B (no splitting).</li>
+        <li>Different elements in A may map to the same element in B.</li>
+      </ul>
+      <div class="example-box">
+        <div class="ex-label">Not a function</div>If 1 → a AND 1 → b, then it is NOT a function (one element has two
+        images).
+      </div>
+    </section>
 
-  <section>
-    <h2>4. Types of Functions</h2>
-    <div class="defn-box"><div class="term">One-One (Injective)</div><p>f: A → B is one-one if no two elements of A have the same image.<br>i.e., f(a₁) = f(a₂) ⟹ a₁ = a₂.</p></div>
-    <div class="defn-box"><div class="term">Onto (Surjective)</div><p>f: A → B is onto if every element of B has at least one pre-image in A.<br>i.e., Range of f = Co-domain (B).</p></div>
-    <div class="defn-box"><div class="term">Bijection (One-One &amp; Onto)</div><p>A function that is both one-one and onto. There is a perfect pairing between A and B.</p></div>
-    <div class="defn-box"><div class="term">Identity Function</div><p>f: A → A defined by f(x) = x for all x ∈ A. Every element maps to itself.</p></div>
-    <div class="defn-box"><div class="term">Constant Function</div><p>f: A → B defined by f(x) = k for all x ∈ A (k is a fixed constant). Range = {k}.</p></div>
-  </section>
+    <section>
+      <h2>4. Types of Functions</h2>
+      <div class="defn-box">
+        <div class="term">One-One (Injective)</div>
+        <p>f: A → B is one-one if no two elements of A have the same image.<br>i.e., f(a₁) = f(a₂) ⟹ a₁ = a₂.</p>
+      </div>
+      <div class="defn-box">
+        <div class="term">Onto (Surjective)</div>
+        <p>f: A → B is onto if every element of B has at least one pre-image in A.<br>i.e., Range of f = Co-domain (B).
+        </p>
+      </div>
+      <div class="defn-box">
+        <div class="term">Bijection (One-One &amp; Onto)</div>
+        <p>A function that is both one-one and onto. There is a perfect pairing between A and B.</p>
+      </div>
+      <div class="defn-box">
+        <div class="term">Identity Function</div>
+        <p>f: A → A defined by f(x) = x for all x ∈ A. Every element maps to itself.</p>
+      </div>
+      <div class="defn-box">
+        <div class="term">Constant Function</div>
+        <p>f: A → B defined by f(x) = k for all x ∈ A (k is a fixed constant). Range = {k}.</p>
+      </div>
+    </section>
 
-  <section>
-    <h2>5. Composition of Functions</h2>
-    <p>If f: A → B and g: B → C, then the composition <strong>g ∘ f : A → C</strong> is defined as (g ∘ f)(x) = g(f(x)).</p>
-    <div class="highlight"><strong>Order matters:</strong> f ∘ g ≠ g ∘ f in general. Always evaluate the inner function first.</div>
-    <div class="example-box"><div class="ex-label">Example</div>f(x) = 2x + 1, g(x) = x²<br>(f ∘ g)(x) = f(g(x)) = f(x²) = 2x² + 1<br>(g ∘ f)(x) = g(f(x)) = g(2x+1) = (2x+1)²</div>
-  </section>
+    <section>
+      <h2>5. Composition of Functions</h2>
+      <p>If f: A → B and g: B → C, then the composition <strong>g ∘ f : A → C</strong> is defined as (g ∘ f)(x) =
+        g(f(x)).</p>
+      <div class="highlight"><strong>Order matters:</strong> f ∘ g ≠ g ∘ f in general. Always evaluate the inner
+        function first.</div>
+      <div class="example-box">
+        <div class="ex-label">Example</div>f(x) = 2x + 1, g(x) = x²<br>(f ∘ g)(x) = f(g(x)) = f(x²) = 2x² + 1<br>(g ∘
+        f)(x) = g(f(x)) = g(2x+1) = (2x+1)²
+      </div>
+    </section>
 
-  <section>
-    <h2>6. Inverse of a Function</h2>
-    <p>If f: A → B is a bijection, then there exists a function f⁻¹: B → A called the <strong>inverse</strong> of f, such that f⁻¹(f(x)) = x.</p>
-    <div class="highlight">Only a <strong>bijective</strong> function has an inverse.</div>
-    <h3>How to find the inverse:</h3>
-    <ol>
-      <li>Replace f(x) with y.</li>
-      <li>Express x in terms of y.</li>
-      <li>Replace y with x to get f⁻¹(x).</li>
-      <li>Verify: f⁻¹(f(x)) = x.</li>
-    </ol>
-    <div class="example-box"><div class="ex-label">Example</div>f(x) = 3x + 2<br>y = 3x + 2 → x = (y − 2)/3<br>∴ f⁻¹(x) = (x − 2)/3</div>
-  </section>
-</div>
+    <section>
+      <h2>6. Inverse of a Function</h2>
+      <p>If f: A → B is a bijection, then there exists a function f⁻¹: B → A called the <strong>inverse</strong> of f,
+        such that f⁻¹(f(x)) = x.</p>
+      <div class="highlight">Only a <strong>bijective</strong> function has an inverse.</div>
+      <h3>How to find the inverse:</h3>
+      <ol>
+        <li>Replace f(x) with y.</li>
+        <li>Express x in terms of y.</li>
+        <li>Replace y with x to get f⁻¹(x).</li>
+        <li>Verify: f⁻¹(f(x)) = x.</li>
+      </ol>
+      <div class="example-box">
+        <div class="ex-label">Example</div>f(x) = 3x + 2<br>y = 3x + 2 → x = (y − 2)/3<br>∴ f⁻¹(x) = (x − 2)/3
+      </div>
+    </section>
+  </div>
 </body>
+
 </html>
