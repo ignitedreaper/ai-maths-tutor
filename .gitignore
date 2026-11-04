@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -15,10 +16,22 @@
 
 # next.js
 /.next/
+.next/
 /out/
+out/
 
 # production
 /build
+build/
+
+# Capacitor and mobile build output
+/android/
+android/
+/ios/
+ios/
+
+# local database storage
+db/local_store.json
 
 # misc
 .DS_Store
