@@ -6,10 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:migrate": "node scripts/migrate.js",
+    "seed:admin": "node scripts/seed-admin.js",
+    "seed:users": "node scripts/seed-users.js",
+    "seed": "node scripts/seed-users.js",
+    "test:auth": "node scripts/test-auth.js"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.1149.0",
+    "@node-rs/argon2": "^2.2.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@upstash/ratelimit": "^2.2.0",
+    "@upstash/redis": "^1.41.0",
+    "bcryptjs": "^3.0.3",
     "better-react-mathjax": "^2.3.0",
     "lucide-react": "^1.27.0",
     "next": "^16.2.0",

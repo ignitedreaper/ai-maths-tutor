@@ -4,11 +4,31 @@ import {
   Message,
 } from '@aws-sdk/client-bedrock-runtime';
 
-// BedrockRuntimeClient using region from process.env.AWS_REGION.
-// Relies on default AWS credential chain (IAM role or env vars).
-const client = new BedrockRuntimeClient({
-  region: process.env.AWS_REGION,
-});
+/**
+ * Initializes and returns a BedrockRuntimeClient.
+ * Accepts credentials from BEDROCK_AWS_ACCESS_KEY_ID / BEDROCK_AWS_SECRET_ACCESS_KEY
+ * (used on Vercel where AWS_* variable names are reserved), falling back to
+ * AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY, or the default AWS credential chain (IAM).
+ */
+function getBedrockClient(): BedrockRuntimeClient {
+  const region = process.env.AWS_REGION || 'us-east-1';
+  const accessKeyId =
+    process.env.BEDROCK_AWS_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID;
+  const secretAccessKey =
+    process.env.BEDROCK_AWS_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+
+  if (accessKeyId && secretAccessKey) {
+    return new BedrockRuntimeClient({
+      region,
+      credentials: {
+        accessKeyId: accessKeyId.trim(),
+        secretAccessKey: secretAccessKey.trim(),
+      },
+    });
+  }
+
+  return new BedrockRuntimeClient({ region });
+}
 
 export interface InputMessage {
   role: string;
@@ -26,6 +46,8 @@ export async function askQwen(
   if (!modelId) {
     throw new Error('BEDROCK_MODEL_ID environment variable is missing.');
   }
+
+  const client = getBedrockClient();
 
   // 1. Map "model" to "assistant", keep "user"
   const normalized = messages.map((msg) => ({
@@ -60,12 +82,15 @@ export async function askQwen(
     content: [{ text: m.content }],
   }));
 
+  // Cap max output tokens strictly (max 600 tokens by default, capped at 1000)
+  const maxTokens = Math.min(Number(process.env.BEDROCK_MAX_TOKENS) || 600, 1000);
+
   const command = new ConverseCommand({
     modelId,
     system: system ? [{ text: system }] : undefined,
     messages: converseMessages,
     inferenceConfig: {
-      maxTokens: 600,
+      maxTokens,
       temperature: 0.4,
       topP: 0.9,
     },
