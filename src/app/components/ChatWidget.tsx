@@ -44,7 +44,7 @@ export function ChatWidget() {
         setMessages([
           {
             role: "model",
-            content: "Hello! I'm your **Maths Qwen3-4B Tutor** 🤖 powered by your locally fine-tuned AI model with textbook RAG. Ask me any Class 10 maths question!",
+            content: "Hello! I'm your **Kanitham AI** powered by your locally fine-tuned AI model with textbook . Ask me any Class 10 maths question!",
           },
         ]);
       }
@@ -162,9 +162,9 @@ export function ChatWidget() {
                 <Bot className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-bold text-lg leading-tight">Maths Qwen3-4B Tutor</h3>
+                <h3 className="font-bold text-lg leading-tight">Kanitham AI</h3>
                 <p className="text-blue-100 text-xs font-medium">
-                  {problemContext ? "Context Active ✨" : "Local Model + RAG ✨"}
+                  {problemContext ? "Class 10 Kanitham Tutor • Context Active ✨" : "Class 10 Kanitham Tutor"}
                 </p>
               </div>
             </div>

@@ -1,0 +1,7 @@
+.env.local
+.env*.local
+*.docx
+~$*.docx
+*.txt
+start.bat
+start_all.ps1
